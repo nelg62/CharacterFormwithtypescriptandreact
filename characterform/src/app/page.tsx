@@ -1,10 +1,16 @@
+"use client";
+
+import DisplayPerson from "@/components/DisplayPerson";
 import NewCharacterForm from "@/components/NewCharacterForm";
-import Image from "next/image";
 
 export default function Home() {
   return (
     <div>
+      {/* component Form for creating character  */}
       <NewCharacterForm />
+
+      {/* Component for displaying created characters  */}
+      <DisplayPerson />
     </div>
   );
 }
