@@ -18,11 +18,15 @@ interface PersonType {
 // create typing for context
 interface NewPersonContextType {
   handleAddPerson: (newPerson: PersonType) => void;
+  handleUpdatePerson: (updatedPerson: PersonType) => void;
   currentCharacters: PersonType[];
   setCurrentCharacters: React.Dispatch<SetStateAction<PersonType[]>>;
-  filebase64: string;
-  convertFile: (files: FileList | null) => void;
-  setFileBase64: React.Dispatch<SetStateAction<string>>;
+  // filebase64: string;
+  convertFile: (
+    files: FileList | null,
+    callback: (base64: string) => void
+  ) => void;
+  // setFileBase64: React.Dispatch<SetStateAction<string>>;
 }
 
 const NewPersonContext = createContext<NewPersonContextType | undefined>(
@@ -68,22 +72,26 @@ export const NewPersonProvider = ({ children }: { children: ReactNode }) => {
   const [currentCharacters, setCurrentCharacters] = useState(characters);
 
   //   state for managing images on form
-  const [filebase64, setFileBase64] = useState<string>("");
+  // const [filebase64, setFileBase64] = useState<string>("");
 
   //   form for converting file types from form to usable data (limited to images at the moment)
-  function convertFile(files: FileList | null) {
+  const convertFile = (
+    files: FileList | null,
+    callback: (base64: string) => void
+  ) => {
     if (files) {
       const fileRef = files[0] || "";
       const fileType: string = fileRef.type || "";
-      console.log("This file upload is of type:", fileType);
       const reader = new FileReader();
       reader.readAsBinaryString(fileRef);
       reader.onload = (ev: any) => {
-        // convert it to base64
-        setFileBase64(`data:${fileType};base64,${btoa(ev.target.result)}`);
+        const base64String = `data:${fileType};base64,${btoa(
+          ev.target.result
+        )}`;
+        callback(base64String);
       };
     }
-  }
+  };
 
   //   add new person to characters array
   const handleAddPerson = (newPerson: PersonType) => {
@@ -94,15 +102,24 @@ export const NewPersonProvider = ({ children }: { children: ReactNode }) => {
     console.log("currentCharacters", currentCharacters);
   };
 
+  const handleUpdatePerson = (updatedPerson: PersonType) => {
+    setCurrentCharacters(
+      currentCharacters.map((character) =>
+        character.id === updatedPerson.id ? updatedPerson : character
+      )
+    );
+  };
+
   return (
     <NewPersonContext.Provider
       value={{
         currentCharacters,
         setCurrentCharacters,
         handleAddPerson,
-        filebase64,
+        // filebase64,
         convertFile,
-        setFileBase64,
+        // setFileBase64,
+        handleUpdatePerson,
       }}
     >
       {children}

@@ -3,11 +3,17 @@ import { useNewPerson } from "@/context/NewPersonContext";
 import React, { useState } from "react";
 
 function NewCharacterForm() {
-  const { handleAddPerson, convertFile, filebase64, setFileBase64 } =
-    useNewPerson();
+  const { handleAddPerson, convertFile } = useNewPerson();
   //   state for Firstname and LastName for form
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [filebase64, setFileBase64] = useState<string>("");
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    convertFile(e.target.files, (base64) => {
+      setFileBase64(base64);
+    });
+  };
 
   //   on form submit
   const handleSubmit = (e: React.SyntheticEvent) => {
@@ -76,10 +82,12 @@ function NewCharacterForm() {
             id="personimage"
             type="file"
             name="Image"
-            onChange={(e) => convertFile(e.target.files)}
+            onChange={handleImageChange}
             accept="image/*"
           />
-          <img src={filebase64} className="max-h-40" />
+          {filebase64 && (
+            <img src={filebase64} className="max-h-40 mt-2" alt="Preview" />
+          )}
         </div>
 
         {/* Submit Button */}
