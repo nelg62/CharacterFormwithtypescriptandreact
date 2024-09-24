@@ -62,10 +62,13 @@ function DisplayPerson() {
   };
 
   return (
-    <div className="grid grid-cols-4 text-center p-4">
+    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 text-center p-4">
       {/* Map list of characters in card format using array from newperson context to display in grid  */}
       {currentCharacters.map((character) => (
-        <div className="m-2 border rounded" key={character.id}>
+        <div
+          className="m-2 border rounded-lg border-gray-300 bg-white items-center shadow-lg"
+          key={character.id}
+        >
           {editMode === character.id ? (
             <div>
               <div>
@@ -74,12 +77,14 @@ function DisplayPerson() {
                   name="FirstName"
                   value={editPerson.FirstName}
                   onChange={handleEditChange}
+                  className="text-black"
                 />
                 <input
                   type="text"
                   name="LastName"
                   value={editPerson.LastName}
                   onChange={handleEditChange}
+                  className="text-black"
                 />
                 {/* Image Upload */}
                 <div>
@@ -91,7 +96,7 @@ function DisplayPerson() {
                   />
                   <img
                     src={editPerson.Image}
-                    className="max-h-40"
+                    className="max-h-40 inline"
                     alt="Character"
                   />
                 </div>
@@ -102,14 +107,19 @@ function DisplayPerson() {
           ) : (
             <div>
               {/* ID of Character */}
-              <div>ID: {character.id}</div>
-              {/* FirstName and LastName of Character */}
-              <div>
-                {character.FirstName} {character.LastName}
+              <div className="text-gray-500 text-lg font-bold mb-3">
+                ID: {character.id}
               </div>
+              {/* FirstName and LastName of Character */}
+              <h5 className="text-xl font-semibold mb-2">
+                {character.FirstName} {character.LastName}
+              </h5>
               {/* Display Image of Character */}
               <div className="grid items-center justify-items-center">
-                <img src={character.Image} className="max-h-40" />
+                <img
+                  src={character.Image}
+                  className="max-h-40 rounded-lg mb-4"
+                />
               </div>
               {/* description of character  */}
               <div>Description</div>
