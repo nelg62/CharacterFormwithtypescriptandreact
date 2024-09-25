@@ -20,6 +20,7 @@ function DisplayPerson() {
     FirstName: "",
     LastName: "",
     Image: "",
+    Border: "",
   });
 
   // Delete Character from characters array
@@ -66,7 +67,7 @@ function DisplayPerson() {
       {/* Map list of characters in card format using array from newperson context to display in grid  */}
       {currentCharacters.map((character) => (
         <div
-          className="m-2 border rounded-lg border-gray-300 bg-white items-center shadow-lg"
+          className={`m-2 border-${character.Border} border-2 rounded-lg border-gray-300 bg-white items-center shadow-lg`}
           key={character.id}
         >
           {editMode === character.id ? (

@@ -2,6 +2,16 @@
 import { useNewPerson } from "@/context/NewPersonContext";
 import React, { useState } from "react";
 import Modal from "./Modal";
+import { Dropdown } from "./Dropdown";
+
+type BorderStyle = "solid" | "dashed" | "dotted" | "double";
+
+const borderOptions = [
+  { value: "solid", label: "Solid" },
+  { value: "dashed", label: "Dashed" },
+  { value: "dotted", label: "Dotted" },
+  { value: "double", label: "Double" },
+];
 
 function NewCharacterForm() {
   const { handleAddPerson, convertFile } = useNewPerson();
@@ -11,6 +21,8 @@ function NewCharacterForm() {
   const [filebase64, setFileBase64] = useState<string>("");
 
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  const [borderStyle, setBorderStyle] = useState<BorderStyle>("solid");
 
   function toggleModal() {
     setShowModal(!showModal);
@@ -38,6 +50,7 @@ function NewCharacterForm() {
       FirstName: { value: string };
       LastName: { value: string };
       Image: { value: string };
+      Border: { value: string };
     };
 
     // create a new object from the form data and store in new variable
@@ -46,6 +59,7 @@ function NewCharacterForm() {
       FirstName: target.FirstName.value,
       LastName: target.LastName.value,
       Image: filebase64,
+      Border: target.Border,
     };
 
     // call handleAddperson from context to add addPersonToForm objerct to the characters array
@@ -71,7 +85,7 @@ function NewCharacterForm() {
       <Modal open={showModal} onClose={toggleModal}>
         <div>
           <form
-            className="bg-white text-center rounded-lg border rounded-lg border-gray-300 items-center shadow-lg"
+            className={`bg-white text-center rounded-lg border-${borderStyle} border-2 border-gray-300 items-center shadow-lg`}
             onSubmit={handleSubmit}
           >
             <h2 className="text-gray-700 text-xl font-bold mt-2 mb-3">
@@ -138,6 +152,15 @@ function NewCharacterForm() {
                   alt="Preview"
                 />
               )}
+            </div>
+
+            <div>
+              <Dropdown<BorderStyle>
+                label="Choose a border style:"
+                options={borderOptions}
+                selectedOption={borderStyle}
+                onChange={setBorderStyle}
+              />
             </div>
 
             {/* Submit Button */}

@@ -13,6 +13,7 @@ interface PersonType {
   FirstName: string;
   LastName: string;
   Image: string;
+  Border: string;
 }
 
 // create typing for context
@@ -40,30 +41,35 @@ const characters: PersonType[] = [
     FirstName: "Kazuma",
     LastName: "Kiryu",
     Image: "Kiryu_Y0.webp",
+    Border: "solid",
   },
   {
     id: 2,
     FirstName: "GIR",
     LastName: "",
     Image: "Gir_mouth_open.webp",
+    Border: "dotted",
   },
   {
     id: 3,
     FirstName: "Goro",
     LastName: "Majima",
     Image: "yakuza-0-release-date-set-for-january-1469635416610.webp",
+    Border: "solid",
   },
   {
     id: 4,
     FirstName: "Zim",
     LastName: "",
     Image: "Zim.yelling.svg",
+    Border: "solid",
   },
   {
     id: 5,
     FirstName: "Patrick",
     LastName: "Star",
     Image: "Patrick_Star.svg.png",
+    Border: "solid",
   },
 ];
 
