@@ -4,6 +4,8 @@ Recreateing Miniproject 1 with Typescript and next.js with react
 <!-- https://github.com/bocacode/react-image-upload -->
 <!-- https://stackademic.com/blog/how-to-implement-a-reusable-modal-component-in-react-and-typescript -->
 
+<!-- https://miroslavpetrik.medium.com/lets-create-a-generic-select-component-in-react-typescript-fa720da0e015 -->
+
 <!-- add sorting -->
 <!-- add backend -->
 <!-- add database -->
