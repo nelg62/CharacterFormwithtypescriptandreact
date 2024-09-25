@@ -107,11 +107,11 @@ function DisplayPerson() {
           ) : (
             <div>
               {/* ID of Character */}
-              <div className="text-gray-500 text-lg font-bold mb-3">
+              <div className="text-gray-500 text-lg font-bold mt-2 mb-3 ">
                 ID: {character.id}
               </div>
               {/* FirstName and LastName of Character */}
-              <h5 className="text-xl font-semibold mb-2">
+              <h5 className="text-xl font-semibold mb-2 text-gray-700">
                 {character.FirstName} {character.LastName}
               </h5>
               {/* Display Image of Character */}
@@ -122,11 +122,17 @@ function DisplayPerson() {
                 />
               </div>
               {/* description of character  */}
-              <div>Description</div>
+              <p className="text-gray-700 mb-4">Description</p>
               {/* delete button */}
-              <div>
-                <button onClick={() => enableEdit(character)}>Edit</button>
+              <div className="space-x-3 mb-2">
                 <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                  onClick={() => enableEdit(character)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
                   id="deleteBtn"
                   onClick={() => handleDelete(character.id)}
                 >
