@@ -59,7 +59,7 @@ function NewCharacterForm() {
       FirstName: target.FirstName.value,
       LastName: target.LastName.value,
       Image: filebase64,
-      Border: target.Border,
+      Border: borderStyle,
     };
 
     // call handleAddperson from context to add addPersonToForm objerct to the characters array
