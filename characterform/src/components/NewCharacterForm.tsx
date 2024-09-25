@@ -54,7 +54,7 @@ function NewCharacterForm() {
     console.log("addParsonToForm", addPersonToForm);
 
     // clear form states
-    clearForm();
+    toggleModal();
   };
 
   return (
