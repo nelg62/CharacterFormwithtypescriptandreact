@@ -3,10 +3,11 @@ import { useNewPerson } from "@/context/NewPersonContext";
 import React, { useState } from "react";
 import Modal from "./Modal";
 import { Dropdown } from "./Dropdown";
+import { ColorPicker } from "./ColorPicker";
 
 type BorderStyle = "solid" | "dashed" | "dotted" | "double";
 
-const borderOptions = [
+const borderOptions: { value: BorderStyle; label: string }[] = [
   { value: "solid", label: "Solid" },
   { value: "dashed", label: "Dashed" },
   { value: "dotted", label: "Dotted" },
@@ -23,6 +24,8 @@ function NewCharacterForm() {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const [borderStyle, setBorderStyle] = useState<BorderStyle>("solid");
+
+  const [backgroundColor, setBackgroundColor] = useState<string>("#FFFFFF");
 
   function toggleModal() {
     setShowModal(!showModal);
@@ -51,6 +54,7 @@ function NewCharacterForm() {
       LastName: { value: string };
       Image: { value: string };
       Border: { value: string };
+      BackgroundColor: { value: string };
     };
 
     // create a new object from the form data and store in new variable
@@ -60,6 +64,7 @@ function NewCharacterForm() {
       LastName: target.LastName.value,
       Image: filebase64,
       Border: borderStyle,
+      BackgroundColor: backgroundColor,
     };
 
     // call handleAddperson from context to add addPersonToForm objerct to the characters array
@@ -87,6 +92,7 @@ function NewCharacterForm() {
           <form
             className={`bg-white text-center rounded-lg border-${borderStyle} border-2 border-gray-300 items-center shadow-lg`}
             onSubmit={handleSubmit}
+            style={{ backgroundColor }}
           >
             <h2 className="text-gray-700 text-xl font-bold mt-2 mb-3">
               Create New Character
@@ -160,6 +166,14 @@ function NewCharacterForm() {
                 options={borderOptions}
                 selectedOption={borderStyle}
                 onChange={setBorderStyle}
+              />
+            </div>
+
+            <div>
+              <ColorPicker
+                label=":Choose background color:"
+                selectedColor={backgroundColor}
+                onChange={setBackgroundColor}
               />
             </div>
 
