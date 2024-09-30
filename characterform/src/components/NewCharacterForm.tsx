@@ -26,6 +26,7 @@ function NewCharacterForm() {
   const [borderStyle, setBorderStyle] = useState<BorderStyle>("solid");
 
   const [backgroundColor, setBackgroundColor] = useState<string>("#FFFFFF");
+  const [borderColor, setBorderColor] = useState<string>("#000000");
 
   function toggleModal() {
     setShowModal(!showModal);
@@ -42,6 +43,9 @@ function NewCharacterForm() {
     setFirstName("");
     setLastName("");
     setFileBase64("");
+    setBorderStyle("solid");
+    setBackgroundColor("");
+    setBorderColor("");
   }
 
   //   on form submit
@@ -55,6 +59,7 @@ function NewCharacterForm() {
       Image: { value: string };
       Border: { value: string };
       BackgroundColor: { value: string };
+      BorderColor: { value: string };
     };
 
     // create a new object from the form data and store in new variable
@@ -65,6 +70,7 @@ function NewCharacterForm() {
       Image: filebase64,
       Border: borderStyle,
       BackgroundColor: backgroundColor,
+      BorderColor: borderColor,
     };
 
     // call handleAddperson from context to add addPersonToForm objerct to the characters array
@@ -90,9 +96,9 @@ function NewCharacterForm() {
       <Modal open={showModal} onClose={toggleModal}>
         <div>
           <form
-            className={`bg-white text-center rounded-lg border-${borderStyle} border-2 border-gray-300 items-center shadow-lg`}
+            className={`bg-white text-center rounded-lg border-2 border-gray-300 items-center shadow-lg`}
             onSubmit={handleSubmit}
-            style={{ backgroundColor }}
+            style={{ borderStyle, backgroundColor, borderColor }}
           >
             <h2 className="text-gray-700 text-xl font-bold mt-2 mb-3">
               Create New Character
@@ -174,6 +180,14 @@ function NewCharacterForm() {
                 label=":Choose background color:"
                 selectedColor={backgroundColor}
                 onChange={setBackgroundColor}
+              />
+            </div>
+
+            <div>
+              <ColorPicker
+                label=":Choose Border color:"
+                selectedColor={borderColor}
+                onChange={setBorderColor}
               />
             </div>
 

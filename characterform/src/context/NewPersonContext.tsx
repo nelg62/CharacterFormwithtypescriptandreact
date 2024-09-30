@@ -15,6 +15,7 @@ interface PersonType {
   Image: string;
   Border: string;
   BackgroundColor: string;
+  BorderColor: string;
 }
 
 // create typing for context
@@ -44,6 +45,7 @@ const characters: PersonType[] = [
     Image: "Kiryu_Y0.webp",
     Border: "solid",
     BackgroundColor: "#ffdbbb",
+    BorderColor: "#000000",
   },
   {
     id: 2,
@@ -52,6 +54,7 @@ const characters: PersonType[] = [
     Image: "Gir_mouth_open.webp",
     Border: "dotted",
     BackgroundColor: "#D3D3D3",
+    BorderColor: "#000000",
   },
   {
     id: 3,
@@ -60,14 +63,16 @@ const characters: PersonType[] = [
     Image: "yakuza-0-release-date-set-for-january-1469635416610.webp",
     Border: "solid",
     BackgroundColor: "	#CBC3E3",
+    BorderColor: "#000000",
   },
   {
     id: 4,
     FirstName: "Zim",
     LastName: "",
     Image: "Zim.yelling.svg",
-    Border: "solid",
+    Border: "dashed",
     BackgroundColor: "#FFC1C3",
+    BorderColor: "#000000",
   },
   {
     id: 5,
@@ -76,6 +81,7 @@ const characters: PersonType[] = [
     Image: "Patrick_Star.svg.png",
     Border: "solid",
     BackgroundColor: "#add8e6",
+    BorderColor: "#000000",
   },
 ];
 

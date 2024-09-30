@@ -22,6 +22,7 @@ function DisplayPerson() {
     Image: "",
     Border: "",
     BackgroundColor: "",
+    BorderColor: "",
   });
 
   // Delete Character from characters array
@@ -68,9 +69,13 @@ function DisplayPerson() {
       {/* Map list of characters in card format using array from newperson context to display in grid  */}
       {currentCharacters.map((character) => (
         <div
-          className={`m-2 border-${character.Border} border-2 rounded-lg border-gray-300 items-center shadow-lg`}
+          className={`m-2 border-2 rounded-lg border-gray-300 items-center shadow-lg`}
           key={character.id}
-          style={{ backgroundColor: character.BackgroundColor }}
+          style={{
+            borderStyle: character.Border,
+            backgroundColor: character.BackgroundColor,
+            borderColor: character.BorderColor,
+          }}
         >
           {editMode === character.id ? (
             <div>
@@ -103,8 +108,18 @@ function DisplayPerson() {
                     alt="Character"
                   />
                 </div>
-                <button onClick={handleSave}>Save</button>
-                <button onClick={() => setEditMode(null)}>Cancel</button>
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                  onClick={handleSave}
+                >
+                  Save
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+                  onClick={() => setEditMode(null)}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           ) : (

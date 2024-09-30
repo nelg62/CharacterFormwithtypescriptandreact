@@ -14,6 +14,7 @@ const borderOptions: { value: BorderStyle; label: string }[] = [
 export default function TestEditStyles() {
   const [borderStyle, setBorderStyle] = useState<BorderStyle>("solid");
   const [backgroundColor, setBackgroundColor] = useState<string>("#1da1f2");
+  const [borderColor, setBorderColor] = useState<string>("red");
 
   console.log("borderstyle", borderStyle);
   console.log("backgroundcolor", backgroundColor);
@@ -32,10 +33,15 @@ export default function TestEditStyles() {
         selectedColor={backgroundColor}
         onChange={setBackgroundColor}
       />
+      <ColorPicker
+        label=":Choose border color"
+        selectedColor={borderColor}
+        onChange={setBorderColor}
+      />
 
       <div
-        className={`border-${borderStyle}  border-2`}
-        style={{ backgroundColor }}
+        className="border-2"
+        style={{ borderStyle, backgroundColor, borderColor }}
       >
         <div>
           <h1>testing</h1>
