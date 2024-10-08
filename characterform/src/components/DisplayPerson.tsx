@@ -8,6 +8,7 @@ interface PersonType {
   id: number;
   FirstName: string;
   LastName: string;
+  Desc?: string;
   Image?: string;
   Border?: string;
   BackgroundColor?: string;
@@ -26,6 +27,7 @@ function DisplayPerson() {
     id: 0,
     FirstName: "",
     LastName: "",
+    Desc: "",
     Image: "",
     Border: "",
     BorderColor: "",
@@ -97,6 +99,7 @@ function DisplayPerson() {
                   onChange={handleEditChange}
                   className="text-black"
                 />
+
                 {/* Image Upload */}
                 <div>
                   <input
@@ -114,6 +117,15 @@ function DisplayPerson() {
                       className="max-h-40 w-auto rounded-lg mb-4"
                     />
                   </div>
+
+                  {/* Description */}
+                  <textarea
+                    name="Desc"
+                    value={editPerson.Desc}
+                    onChange={handleEditChange}
+                    className="text-black resize-none h-40"
+                  />
+
                   <div className="space-x-3 mb-2">
                     {/* Save Button */}
                     <button
@@ -143,6 +155,7 @@ function DisplayPerson() {
               <h5 className="text-xl font-semibold mb-2 text-gray-700">
                 {character.FirstName} {character.LastName}
               </h5>
+
               {/* Display Image of Character */}
               <div className="grid items-center justify-items-center">
                 <Image
@@ -154,6 +167,8 @@ function DisplayPerson() {
                   priority
                 />
               </div>
+              {/* Description */}
+              <h6>{character.Desc}</h6>
               {/*Delete and edit buttons  */}
               <div className="space-x-3 mb-2">
                 {/* Edit button */}
