@@ -28,6 +28,7 @@ interface NewPersonContextType {
     files: FileList | null,
     callback: (base64: string) => void
   ) => void;
+  handleUpdatePerson: (updatedPerson: PersonType) => void;
 }
 
 // chareacter array of objects
@@ -118,6 +119,14 @@ export const NewPersonProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const handleUpdatePerson = (updatedPerson: PersonType) => {
+    setCurrentCharacters(
+      currentCharacters.map((character) =>
+        character.id === updatedPerson.id ? updatedPerson : character
+      )
+    );
+  };
+
   return (
     <NewPersonContext.Provider
       value={{
@@ -125,6 +134,7 @@ export const NewPersonProvider = ({ children }: { children: ReactNode }) => {
         setCurrentCharacters,
         handleAddPerson,
         convertFile,
+        handleUpdatePerson,
       }}
     >
       {children}
