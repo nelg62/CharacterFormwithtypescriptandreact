@@ -24,6 +24,10 @@ interface NewPersonContextType {
   currentCharacters: PersonType[];
   setCurrentCharacters: Dispatch<SetStateAction<PersonType[]>>;
   handleAddPerson: (newPerson: PersonType) => void;
+  convertFile: (
+    files: FileList | null,
+    callback: (base64: string) => void
+  ) => void;
 }
 
 // chareacter array of objects
@@ -32,7 +36,7 @@ const characters: PersonType[] = [
     id: 1,
     FirstName: "Kazuma",
     LastName: "Kiryu",
-    Image: "Kiryu_Y0.webp",
+    Image: "/Kiryu_Y0.webp",
     Border: "solid",
     BackgroundColor: "#ffdbbb",
     BorderColor: "#000000",
@@ -41,7 +45,7 @@ const characters: PersonType[] = [
     id: 2,
     FirstName: "GIR",
     LastName: "",
-    Image: "Gir_mouth_open.webp",
+    Image: "/Gir_mouth_open.webp",
     Border: "dotted",
     BackgroundColor: "#D3D3D3",
     BorderColor: "#000000",
@@ -50,7 +54,7 @@ const characters: PersonType[] = [
     id: 3,
     FirstName: "Goro",
     LastName: "Majima",
-    Image: "yakuza-0-release-date-set-for-january-1469635416610.webp",
+    Image: "/yakuza-0-release-date-set-for-january-1469635416610.webp",
     Border: "solid",
     BackgroundColor: "	#CBC3E3",
     BorderColor: "#000000",
@@ -59,7 +63,7 @@ const characters: PersonType[] = [
     id: 4,
     FirstName: "Zim",
     LastName: "",
-    Image: "Zim.yelling.svg",
+    Image: "/Zim.yelling.svg",
     Border: "dashed",
     BackgroundColor: "#FFC1C3",
     BorderColor: "#000000",
@@ -68,7 +72,7 @@ const characters: PersonType[] = [
     id: 5,
     FirstName: "Patrick",
     LastName: "Star",
-    Image: "Patrick_Star.svg.png",
+    Image: "/Patrick_Star.svg.png",
     Border: "solid",
     BackgroundColor: "#add8e6",
     BorderColor: "#000000",
@@ -91,9 +95,37 @@ export const NewPersonProvider = ({ children }: { children: ReactNode }) => {
     console.log("currentCharacters", currentCharacters);
   };
 
+  const convertFile = (
+    files: FileList | null,
+    callback: (base64: string) => void
+  ) => {
+    if (files) {
+      const fileRef = files[0];
+      if (!fileRef) return;
+
+      const fileType: string = fileRef.type || "";
+      const reader = new FileReader();
+
+      reader.readAsBinaryString(fileRef);
+
+      reader.onload = (ev: ProgressEvent<FileReader>) => {
+        const result = ev.target?.result as string | null;
+        if (result) {
+          const base64String = `data:${fileType};base64,${btoa(result)}`;
+          callback(base64String);
+        }
+      };
+    }
+  };
+
   return (
     <NewPersonContext.Provider
-      value={{ currentCharacters, setCurrentCharacters, handleAddPerson }}
+      value={{
+        currentCharacters,
+        setCurrentCharacters,
+        handleAddPerson,
+        convertFile,
+      }}
     >
       {children}
     </NewPersonContext.Provider>

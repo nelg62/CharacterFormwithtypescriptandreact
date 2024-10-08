@@ -38,7 +38,7 @@ function DisplayPerson() {
           {/* Display Image of Character */}
           <div className="grid items-center justify-items-center">
             <Image
-              src={`/${character.Image}`}
+              src={`${character.Image}`}
               alt={`${character.FirstName}`}
               height={0}
               width={150}
