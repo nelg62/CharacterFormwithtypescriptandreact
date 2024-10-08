@@ -117,7 +117,7 @@ function NewCharacterForm() {
             </div>
 
             {/* Image Upload */}
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center">
               <label
                 className="text-lg font-semibold mt-1 text-gray-500"
                 htmlFor="personimage"
