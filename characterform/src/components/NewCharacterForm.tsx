@@ -4,13 +4,26 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import { useNewPerson } from "@/context/NewPersonContext";
 import Image from "next/image";
+import { Dropdown } from "./Dropdown";
+import { ColorPicker } from "./ColorPicker";
+
+type BorderStyle = "solid" | "dashed" | "dotted" | "double";
 
 interface CharacterFormData {
   id: number;
   FirstName: string;
   LastName: string;
   Image: string;
+  Border: string;
+  BorderColor: string;
 }
+
+const borderOptions: { value: BorderStyle; label: string }[] = [
+  { value: "solid", label: "Solid" },
+  { value: "dashed", label: "Dashed" },
+  { value: "dotted", label: "Dotted" },
+  { value: "double", label: "Double" },
+];
 
 function NewCharacterForm() {
   const { handleAddPerson, convertFile } = useNewPerson();
@@ -21,8 +34,8 @@ function NewCharacterForm() {
 
   const [fileBase64, setFileBase64] = useState<string>("");
 
-  // const [imageFile, setImageFile] = useState<File | null>(null);
-  // const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [borderStyle, setBorderStyle] = useState<BorderStyle>("solid");
+  const [borderColor, setBorderColor] = useState<string>("#000000");
 
   function toggleModal() {
     setShowModal(!showModal);
@@ -37,6 +50,8 @@ function NewCharacterForm() {
       FirstName,
       LastName,
       Image: fileBase64,
+      Border: borderStyle,
+      BorderColor: borderColor,
     };
 
     console.log("formData", formData);
@@ -55,6 +70,8 @@ function NewCharacterForm() {
     setFirstName("");
     setLastName("");
     setFileBase64("");
+    setBorderStyle("solid");
+    setBorderColor("#000000");
   }
 
   return (
@@ -73,6 +90,7 @@ function NewCharacterForm() {
           <form
             className="bg-white text-center rounded-lg border-2 border-gray-300 items-center shadow-lg"
             onSubmit={handleSubmit}
+            style={{ borderStyle, borderColor }}
           >
             <h2 className="text-gray-700 text-xl font-bold mt-2 mb-3">
               Create New Character
@@ -141,6 +159,26 @@ function NewCharacterForm() {
                   height={150}
                 />
               )}
+            </div>
+
+            {/* Border Style Picker */}
+            <div>
+              <Dropdown<BorderStyle>
+                label="Choose a border style:"
+                options={borderOptions}
+                selectedOption={borderStyle}
+                onChange={setBorderStyle}
+              />
+            </div>
+
+            {/* Border Color Picker */}
+
+            <div>
+              <ColorPicker
+                label=":Choose Border color"
+                selectedColor={borderColor}
+                onChange={setBorderColor}
+              />
             </div>
 
             {/* Submit Button */}
