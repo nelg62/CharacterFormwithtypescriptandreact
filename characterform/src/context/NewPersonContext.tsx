@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 
+// Typing for characters
 interface PersonType {
   id: number;
   FirstName: string;
@@ -17,11 +18,15 @@ interface PersonType {
   BackgroundColor?: string;
   BorderColor?: string;
 }
+
+// context typing
 interface NewPersonContextType {
   currentCharacters: PersonType[];
   setCurrentCharacters: Dispatch<SetStateAction<PersonType[]>>;
+  handleAddPerson: (newPerson: PersonType) => void;
 }
 
+// chareacter array of objects
 const characters: PersonType[] = [
   {
     id: 1,
@@ -70,16 +75,25 @@ const characters: PersonType[] = [
   },
 ];
 
+// creating context
 const NewPersonContext = createContext<NewPersonContextType | undefined>(
   undefined
 );
 
+// create context provider
 export const NewPersonProvider = ({ children }: { children: ReactNode }) => {
   const [currentCharacters, setCurrentCharacters] = useState(characters);
 
+  const handleAddPerson = (newPerson: PersonType) => {
+    newPerson.id = currentCharacters.length + 1;
+
+    setCurrentCharacters([...currentCharacters, newPerson]);
+    console.log("currentCharacters", currentCharacters);
+  };
+
   return (
     <NewPersonContext.Provider
-      value={{ currentCharacters, setCurrentCharacters }}
+      value={{ currentCharacters, setCurrentCharacters, handleAddPerson }}
     >
       {children}
     </NewPersonContext.Provider>
