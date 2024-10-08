@@ -16,6 +16,7 @@ interface CharacterFormData {
   Image: string;
   Border: string;
   BorderColor: string;
+  BackgroundColor: string;
 }
 
 const borderOptions: { value: BorderStyle; label: string }[] = [
@@ -36,6 +37,7 @@ function NewCharacterForm() {
 
   const [borderStyle, setBorderStyle] = useState<BorderStyle>("solid");
   const [borderColor, setBorderColor] = useState<string>("#000000");
+  const [backgroundColor, setBackgroundColor] = useState<string>("#FFFFFF");
 
   function toggleModal() {
     setShowModal(!showModal);
@@ -52,6 +54,7 @@ function NewCharacterForm() {
       Image: fileBase64,
       Border: borderStyle,
       BorderColor: borderColor,
+      BackgroundColor: backgroundColor,
     };
 
     console.log("formData", formData);
@@ -72,6 +75,7 @@ function NewCharacterForm() {
     setFileBase64("");
     setBorderStyle("solid");
     setBorderColor("#000000");
+    setBackgroundColor("#FFFFFF");
   }
 
   return (
@@ -90,7 +94,7 @@ function NewCharacterForm() {
           <form
             className="bg-white text-center rounded-lg border-2 border-gray-300 items-center shadow-lg"
             onSubmit={handleSubmit}
-            style={{ borderStyle, borderColor }}
+            style={{ borderStyle, borderColor, backgroundColor }}
           >
             <h2 className="text-gray-700 text-xl font-bold mt-2 mb-3">
               Create New Character
@@ -175,9 +179,19 @@ function NewCharacterForm() {
 
             <div>
               <ColorPicker
-                label=":Choose Border color"
+                label=":Choose Border color:"
                 selectedColor={borderColor}
                 onChange={setBorderColor}
+              />
+            </div>
+
+            {/* Background Color Picker */}
+
+            <div>
+              <ColorPicker
+                label=":Choose background color:"
+                selectedColor={backgroundColor}
+                onChange={setBackgroundColor}
               />
             </div>
 
