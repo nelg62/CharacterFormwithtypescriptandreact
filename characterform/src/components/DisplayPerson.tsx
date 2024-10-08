@@ -43,6 +43,7 @@ function DisplayPerson() {
               height={0}
               width={150}
               className="max-h-40 w-auto rounded-lg mb-4"
+              priority
             />
           </div>
           {/*Delete and edit buttons  */}
