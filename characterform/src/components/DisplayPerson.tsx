@@ -177,7 +177,11 @@ function DisplayPerson() {
               </div>
               {/* Description */}
 
-              <h6 className={`${expanded[character.id] ? "" : "line-clamp-5"}`}>
+              <h6
+                className={`break-words ${
+                  expanded[character.id] ? "" : "line-clamp-5"
+                }`}
+              >
                 {character.Desc}
               </h6>
               <button

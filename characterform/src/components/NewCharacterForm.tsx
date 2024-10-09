@@ -79,11 +79,12 @@ function NewCharacterForm() {
     setBorderStyle("solid");
     setBorderColor("#000000");
     setBackgroundColor("#FFFFFF");
+    setDesc("");
   }
 
   return (
     <>
-      <div className="text-center items-center mt-4">
+      <div className="text-center mt-4">
         <button
           type="button"
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
@@ -92,143 +93,188 @@ function NewCharacterForm() {
           New Character
         </button>
       </div>
+
       <Modal open={showModal} onClose={toggleModal}>
-        <div>
-          <form
-            className="bg-white text-center rounded-lg border-2 border-gray-300 items-center shadow-lg"
-            onSubmit={handleSubmit}
-            style={{ borderStyle, borderColor, backgroundColor }}
+        <div className="grid grid-cols-2">
+          <div>
+            <form
+              onSubmit={handleSubmit}
+              // style={{ borderStyle, borderColor, backgroundColor }}
+            >
+              <h2 className="text-gray-700 text-2xl font-bold mb-4">
+                Create New Character
+              </h2>
+
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                {/* First Name Input */}
+                <div>
+                  <label
+                    className="block text-gray-600 font-semibold"
+                    htmlFor="fname"
+                  >
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="fname"
+                    name="FirstName"
+                    value={FirstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="Enter first name"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Last Name Input */}
+                <div>
+                  <label
+                    className="block text-gray-600 font-semibold"
+                    htmlFor="lname"
+                  >
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    id="lname"
+                    name="LastName"
+                    value={LastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Enter last name"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+
+              {/* Desctiption */}
+              <div className="mb-4">
+                <label
+                  className="block text-gray-600 font-semibold"
+                  htmlFor="Desc"
+                >
+                  Description
+                </label>
+
+                <textarea
+                  name="Desc"
+                  id="Desc"
+                  value={Desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+
+              {/* Image Upload */}
+              <div className="mb-4">
+                <label
+                  className="block text-gray-600 font-semibold"
+                  htmlFor="personimage"
+                >
+                  AddImage
+                </label>
+                <input
+                  id="personimage"
+                  type="file"
+                  name="Image"
+                  onChange={handleImageChange}
+                  accept="image/*"
+                  className="w-full"
+                />
+                {/* {fileBase64 && (
+                  <div className="mt-2">
+                    <Image
+                      src={fileBase64}
+                      className="max-h-40 mt-2 object-contain rounded-md border mx-3"
+                      alt="Character Image Preview"
+                      width={150}
+                      height={150}
+                    />
+                  </div>
+                )} */}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                {/* Border Style Picker */}
+                <div>
+                  <label className="block text-gray-600 font-semibold">
+                    Border Style
+                  </label>
+
+                  <Dropdown<BorderStyle>
+                    label="Choose a border style: "
+                    options={borderOptions}
+                    selectedOption={borderStyle}
+                    onChange={setBorderStyle}
+                  />
+                </div>
+
+                {/* Border Color Picker */}
+                <div>
+                  <label className="block text-gray-600 font-semibold">
+                    Border Color
+                  </label>
+
+                  <ColorPicker
+                    label="Choose Border color: "
+                    selectedColor={borderColor}
+                    onChange={setBorderColor}
+                  />
+                </div>
+              </div>
+
+              {/* Background Color Picker */}
+              <div className="mb-4">
+                <label className="block text-gray-600 font-semibold">
+                  Background Color
+                </label>
+
+                <ColorPicker
+                  label=":Choose background color:"
+                  selectedColor={backgroundColor}
+                  onChange={setBackgroundColor}
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+
+          {/* Live Preview */}
+          <div
+            className="m-2 border-2 rounded-lg items-center shadow-lg text-center"
+            style={{
+              borderStyle: borderStyle,
+              borderColor: borderColor,
+              backgroundColor: backgroundColor,
+            }}
           >
-            <h2 className="text-gray-700 text-xl font-bold mt-2 mb-3">
-              Create New Character
-            </h2>
+            <div className="text-gray-500 text-lg font-bold mt-2 mb-3">ID:</div>
+            {/* Firstname Lastname */}
+            <h5 className="text-xl font-semibold mb-2 text-gray-700 truncate">
+              {FirstName} {LastName}
+            </h5>
 
-            {/* First Name Input */}
-            <div className="flex flex-col">
-              <label
-                className="text-lg font-semibold text-gray-500"
-                htmlFor="fname"
-              >
-                First Name
-              </label>
-              <input
-                type="text"
-                id="fname"
-                name="FirstName"
-                value={FirstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Enter first name"
-                className="text-center mx-3 rounded-lg active:text-black border border-gray-300"
-              />
-            </div>
-
-            {/* Last Name Input */}
-            <div className="flex flex-col">
-              <label
-                className="text-lg font-semibold mt-1 text-gray-500"
-                htmlFor="lname"
-              >
-                Last Name
-              </label>
-              <input
-                type="text"
-                id="lname"
-                name="LastName"
-                value={LastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="Enter last name"
-                className="text-center mx-3 rounded-lg border border-gray-300"
-              />
-            </div>
-
-            {/* Image Upload */}
-            <div className="flex flex-col items-center">
-              <label
-                className="text-lg font-semibold mt-1 text-gray-500"
-                htmlFor="personimage"
-              >
-                AddImage
-              </label>
-              <input
-                id="personimage"
-                type="file"
-                name="Image"
-                onChange={handleImageChange}
-                accept="image/*"
-                className="text-gray-500 mx-3 file:rounded-lg rounded-lg border border-gray-300 "
-              />
-              {fileBase64 && (
+            {/* Image */}
+            <div className="grid items-center justify-items-center">
+              {Image && (
                 <Image
                   src={fileBase64}
-                  className="max-h-40 mt-2 object-contain border mx-3"
-                  alt="Character Image Preview"
+                  alt={FirstName}
+                  height={0}
                   width={150}
-                  height={150}
+                  className="max-h-40 w-auto rounded-lg mb-4"
                 />
               )}
             </div>
-            <label
-              className="text-lg font-semibold mt-1 text-gray-500"
-              htmlFor="Desc"
-            >
-              Description
-            </label>
-            {/* Desctiption */}
-            <div className="flex flex-col">
-              <textarea
-                name="Desc"
-                id="Desc"
-                value={Desc}
-                onChange={(e) => setDesc(e.target.value)}
-                className="text-black resize-none text-center mx-3 rounded-lg border border-gray-300"
-              />
-            </div>
 
-            {/* Border Style Picker */}
-            <label className="text-lg font-semibold mt-1 text-gray-500">
-              Border Style
-            </label>
-            <div>
-              <Dropdown<BorderStyle>
-                label="Choose a border style:"
-                options={borderOptions}
-                selectedOption={borderStyle}
-                onChange={setBorderStyle}
-              />
-            </div>
-
-            {/* Border Color Picker */}
-            <label className="text-lg font-semibold mt-1 text-gray-500">
-              Border Color
-            </label>
-            <div>
-              <ColorPicker
-                label=":Choose Border color:"
-                selectedColor={borderColor}
-                onChange={setBorderColor}
-              />
-            </div>
-
-            {/* Background Color Picker */}
-            <label className="text-lg font-semibold mt-1 text-gray-500">
-              Background Color
-            </label>
-            <div>
-              <ColorPicker
-                label=":Choose background color:"
-                selectedColor={backgroundColor}
-                onChange={setBackgroundColor}
-              />
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 m-2"
-            >
-              Submit
-            </button>
-          </form>
+            {/* Description */}
+            <h6 className="break-words line-clamp-5">{Desc}</h6>
+          </div>
         </div>
       </Modal>
     </>

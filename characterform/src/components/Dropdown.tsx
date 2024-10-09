@@ -16,15 +16,15 @@ export const Dropdown = <T extends string | number>({
   options,
   selectedOption,
   onChange,
-  label,
-}: DropdownProps<T>) => {
+}: // label,
+DropdownProps<T>) => {
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     onChange(event.target.value as T);
   };
 
   return (
     <div>
-      {label && <label htmlFor="dropdown">{label}</label>}
+      {/* {label && <label htmlFor="dropdown">{label}</label>} */}
       <select id="dropdown" value={selectedOption} onChange={handleChange}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -32,7 +32,7 @@ export const Dropdown = <T extends string | number>({
           </option>
         ))}
       </select>
-      <p>You selected: {selectedOption}</p>
+      {/* <p>You selected: {selectedOption}</p> */}
     </div>
   );
 };

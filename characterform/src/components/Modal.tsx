@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 
 interface ModalProps {
   open: boolean;
@@ -6,25 +6,35 @@ interface ModalProps {
   children: ReactElement;
 }
 
-export default function Modal(props: ModalProps): ReturnType<FC> {
+export default function Modal({ open, onClose, children }: ModalProps) {
+  // Close modal when pressing 'Escape' key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [onClose]);
+
+  if (!open) return null;
+
   return (
     <div
-      className={`${"modal"} ${props.open ? "display-block" : "display-none"}`}
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      onClick={onClose}
     >
-      <div className="modal-main bg-slate-300">
-        <div className="modal-head">
-          <h1></h1>
-        </div>
-        <div className="modal-body">{props.children}</div>
-        <div className="btn-container">
-          <button
-            type="button"
-            className="absolute top-1 right-3 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
-            onClick={props.onClose}
-          >
-            X
-          </button>
-        </div>
+      <div
+        className="bg-white rounded-lg p-6 w-full max-w-2xl relative"
+        onClick={(e) => e.stopPropagation()} // Prevents closing modal when clicking inside
+      >
+        <button
+          type="button"
+          className="absolute top-2 right-2 text-red-500 hover:text-red-700 focus:outline-none"
+          onClick={onClose}
+        >
+          &#x2715;
+        </button>
+        <div>{children}</div>
       </div>
     </div>
   );

@@ -1,9 +1,18 @@
 "use client";
+
 import { useNewPerson } from "@/context/NewPersonContext";
+import Image from "next/image";
 import { useState } from "react";
 
-interface DisplayType {
-  handleDelete: (e: React.SyntheticEvent) => void;
+interface PersonType {
+  id: number;
+  FirstName: string;
+  LastName: string;
+  Desc?: string;
+  Image?: string;
+  Border?: string;
+  BackgroundColor?: string;
+  BorderColor?: string;
 }
 
 function DisplayPerson() {
@@ -13,35 +22,36 @@ function DisplayPerson() {
     convertFile,
     handleUpdatePerson,
   } = useNewPerson();
-
   const [editMode, setEditMode] = useState<number | null>(null);
-  const [editPerson, setEditPerson] = useState({
+  const [editPerson, setEditPerson] = useState<PersonType>({
     id: 0,
     FirstName: "",
     LastName: "",
+    Desc: "",
     Image: "",
     Border: "",
-    BackgroundColor: "",
     BorderColor: "",
+    BackgroundColor: "",
   });
+  const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
 
-  // Delete Character from characters array
   const handleDelete = (id: number) => {
-    console.log("e", id);
+    console.log("handleDelete id", id);
 
     setCurrentCharacters(
       currentCharacters.filter((character) => character.id != id)
     );
   };
 
-  const enableEdit = (character: any) => {
+  const enableEdit = (character: PersonType) => {
     console.log("character", character);
-
     setEditMode(character.id);
     setEditPerson(character);
   };
 
-  const handleEditChange = (e: { target: { name: any; value: any } }) => {
+  const handleEditChange = (e: {
+    target: { name: string; value: string | number };
+  }) => {
     setEditPerson({
       ...editPerson,
       [e.target.name]: e.target.value,
@@ -56,12 +66,15 @@ function DisplayPerson() {
 
   const handleSave = () => {
     handleUpdatePerson(editPerson);
-    // setCurrentCharacters(
-    //   currentCharacters.map((character) =>
-    //     character.id === editPerson.id ? editPerson : character
-    //   )
-    // );
+
     setEditMode(null);
+  };
+
+  const toggleExpand = (id: number) => {
+    setExpanded((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
   };
 
   return (
@@ -69,12 +82,12 @@ function DisplayPerson() {
       {/* Map list of characters in card format using array from newperson context to display in grid  */}
       {currentCharacters.map((character) => (
         <div
-          className={`m-2 border-2 rounded-lg border-gray-300 items-center shadow-lg`}
+          className="m-2 border-2 rounded-lg border-gray-300 items-center shadow-lg"
           key={character.id}
           style={{
             borderStyle: character.Border,
-            backgroundColor: character.BackgroundColor,
             borderColor: character.BorderColor,
+            backgroundColor: character.BackgroundColor,
           }}
         >
           {editMode === character.id ? (
@@ -94,6 +107,7 @@ function DisplayPerson() {
                   onChange={handleEditChange}
                   className="text-black"
                 />
+
                 {/* Image Upload */}
                 <div>
                   <input
@@ -102,53 +116,87 @@ function DisplayPerson() {
                     accept="image/*"
                     onChange={handleImageChange}
                   />
-                  <img
-                    src={editPerson.Image}
-                    className="max-h-40 inline"
-                    alt="Character"
+                  <div className="grid items-center justify-items-center">
+                    <Image
+                      src={`${editPerson.Image}`}
+                      alt={`${editPerson.FirstName}`}
+                      height={0}
+                      width={150}
+                      className="max-h-40 w-auto rounded-lg mb-4"
+                    />
+                  </div>
+
+                  {/* Description */}
+                  <textarea
+                    name="Desc"
+                    value={editPerson.Desc}
+                    onChange={handleEditChange}
+                    className="text-black resize-none h-40"
                   />
+
+                  <div className="space-x-3 mb-2">
+                    {/* Save Button */}
+                    <button
+                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                      onClick={handleSave}
+                    >
+                      Save
+                    </button>
+                    {/* Cancel Button */}
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+                      onClick={() => setEditMode(null)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-                <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
-                  onClick={handleSave}
-                >
-                  Save
-                </button>
-                <button
-                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
-                  onClick={() => setEditMode(null)}
-                >
-                  Cancel
-                </button>
               </div>
             </div>
           ) : (
             <div>
               {/* ID of Character */}
-              <div className="text-gray-500 text-lg font-bold mt-2 mb-3 ">
+              <div className="text-gray-500 text-lg font-bold mt-2 mb-3">
                 ID: {character.id}
               </div>
               {/* FirstName and LastName of Character */}
               <h5 className="text-xl font-semibold mb-2 text-gray-700">
                 {character.FirstName} {character.LastName}
               </h5>
+
               {/* Display Image of Character */}
               <div className="grid items-center justify-items-center">
-                <img
-                  src={character.Image}
-                  className="max-h-40 rounded-lg mb-4"
+                <Image
+                  src={`${character.Image}`}
+                  alt={`${character.FirstName}`}
+                  height={0}
+                  width={150}
+                  className="max-h-40 w-auto rounded-lg mb-4"
+                  priority
                 />
               </div>
-              {/* description of character  */}
-              <p className="text-gray-700 mb-4">Description</p>
-              {/* delete button */}
+              {/* Description */}
+
+              <h6 className={`${expanded[character.id] ? "" : "line-clamp-5"}`}>
+                {character.Desc}
+              </h6>
+              <button
+                onClick={() => toggleExpand(character.id)}
+                className="text-blue-500 underline"
+              >
+                {expanded[character.id] ? "Show Less" : "Show More"}
+              </button>
+              {/*Delete and edit buttons  */}
               <div className="space-x-3 mb-2">
+                {/* Edit button */}
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
                   onClick={() => enableEdit(character)}
                 >
                   Edit
                 </button>
+
+                {/* Delete Button */}
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
                   id="deleteBtn"

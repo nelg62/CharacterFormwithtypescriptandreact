@@ -1,11 +1,24 @@
 "use client";
-import { useNewPerson } from "@/context/NewPersonContext";
+
 import React, { useState } from "react";
 import Modal from "./Modal";
+import { useNewPerson } from "@/context/NewPersonContext";
+import Image from "next/image";
 import { Dropdown } from "./Dropdown";
 import { ColorPicker } from "./ColorPicker";
 
 type BorderStyle = "solid" | "dashed" | "dotted" | "double";
+
+interface CharacterFormData {
+  id: number;
+  FirstName: string;
+  LastName: string;
+  Desc: string;
+  Image: string;
+  Border: string;
+  BorderColor: string;
+  BackgroundColor: string;
+}
 
 const borderOptions: { value: BorderStyle; label: string }[] = [
   { value: "solid", label: "Solid" },
@@ -16,22 +29,42 @@ const borderOptions: { value: BorderStyle; label: string }[] = [
 
 function NewCharacterForm() {
   const { handleAddPerson, convertFile } = useNewPerson();
-  //   state for Firstname and LastName for form
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [filebase64, setFileBase64] = useState<string>("");
 
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [FirstName, setFirstName] = useState("");
+  const [LastName, setLastName] = useState("");
+  const [Desc, setDesc] = useState("");
+
+  const [fileBase64, setFileBase64] = useState<string>("");
 
   const [borderStyle, setBorderStyle] = useState<BorderStyle>("solid");
-
-  const [backgroundColor, setBackgroundColor] = useState<string>("#FFFFFF");
   const [borderColor, setBorderColor] = useState<string>("#000000");
+  const [backgroundColor, setBackgroundColor] = useState<string>("#FFFFFF");
 
   function toggleModal() {
     setShowModal(!showModal);
     clearForm();
   }
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    const formData: CharacterFormData = {
+      id: 1,
+      FirstName,
+      LastName,
+      Desc,
+      Image: fileBase64,
+      Border: borderStyle,
+      BorderColor: borderColor,
+      BackgroundColor: backgroundColor,
+    };
+
+    console.log("formData", formData);
+    handleAddPerson(formData);
+
+    toggleModal();
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     convertFile(e.target.files, (base64) => {
@@ -44,43 +77,9 @@ function NewCharacterForm() {
     setLastName("");
     setFileBase64("");
     setBorderStyle("solid");
-    setBackgroundColor("");
-    setBorderColor("");
+    setBorderColor("#000000");
+    setBackgroundColor("#FFFFFF");
   }
-
-  //   on form submit
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-
-    // set typing of the e.target recieved from the form
-    const target = e.target as typeof e.target & {
-      FirstName: { value: string };
-      LastName: { value: string };
-      Image: { value: string };
-      Border: { value: string };
-      BackgroundColor: { value: string };
-      BorderColor: { value: string };
-    };
-
-    // create a new object from the form data and store in new variable
-    const addPersonToForm = {
-      id: 1,
-      FirstName: target.FirstName.value,
-      LastName: target.LastName.value,
-      Image: filebase64,
-      Border: borderStyle,
-      BackgroundColor: backgroundColor,
-      BorderColor: borderColor,
-    };
-
-    // call handleAddperson from context to add addPersonToForm objerct to the characters array
-    handleAddPerson(addPersonToForm);
-
-    console.log("addParsonToForm", addPersonToForm);
-
-    // clear form states
-    toggleModal();
-  };
 
   return (
     <>
@@ -96,13 +95,14 @@ function NewCharacterForm() {
       <Modal open={showModal} onClose={toggleModal}>
         <div>
           <form
-            className={`bg-white text-center rounded-lg border-2 border-gray-300 items-center shadow-lg`}
+            className="bg-white text-center rounded-lg border-2 border-gray-300 items-center shadow-lg"
             onSubmit={handleSubmit}
-            style={{ borderStyle, backgroundColor, borderColor }}
+            style={{ borderStyle, borderColor, backgroundColor }}
           >
             <h2 className="text-gray-700 text-xl font-bold mt-2 mb-3">
               Create New Character
             </h2>
+
             {/* First Name Input */}
             <div className="flex flex-col">
               <label
@@ -115,7 +115,7 @@ function NewCharacterForm() {
                 type="text"
                 id="fname"
                 name="FirstName"
-                value={firstName}
+                value={FirstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Enter first name"
                 className="text-center mx-3 rounded-lg active:text-black border border-gray-300"
@@ -134,15 +134,15 @@ function NewCharacterForm() {
                 type="text"
                 id="lname"
                 name="LastName"
-                value={lastName}
+                value={LastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Enter last name"
                 className="text-center mx-3 rounded-lg border border-gray-300"
               />
             </div>
 
-            {/* Add image Input */}
-            <div className="flex flex-col">
+            {/* Image Upload */}
+            <div className="flex flex-col items-center">
               <label
                 className="text-lg font-semibold mt-1 text-gray-500"
                 htmlFor="personimage"
@@ -157,15 +157,37 @@ function NewCharacterForm() {
                 accept="image/*"
                 className="text-gray-500 mx-3 file:rounded-lg rounded-lg border border-gray-300 "
               />
-              {filebase64 && (
-                <img
-                  src={filebase64}
+              {fileBase64 && (
+                <Image
+                  src={fileBase64}
                   className="max-h-40 mt-2 object-contain border mx-3"
-                  alt="Preview"
+                  alt="Character Image Preview"
+                  width={150}
+                  height={150}
                 />
               )}
             </div>
+            <label
+              className="text-lg font-semibold mt-1 text-gray-500"
+              htmlFor="Desc"
+            >
+              Description
+            </label>
+            {/* Desctiption */}
+            <div className="flex flex-col">
+              <textarea
+                name="Desc"
+                id="Desc"
+                value={Desc}
+                onChange={(e) => setDesc(e.target.value)}
+                className="text-black resize-none text-center mx-3 rounded-lg border border-gray-300"
+              />
+            </div>
 
+            {/* Border Style Picker */}
+            <label className="text-lg font-semibold mt-1 text-gray-500">
+              Border Style
+            </label>
             <div>
               <Dropdown<BorderStyle>
                 label="Choose a border style:"
@@ -175,19 +197,27 @@ function NewCharacterForm() {
               />
             </div>
 
-            <div>
-              <ColorPicker
-                label=":Choose background color:"
-                selectedColor={backgroundColor}
-                onChange={setBackgroundColor}
-              />
-            </div>
-
+            {/* Border Color Picker */}
+            <label className="text-lg font-semibold mt-1 text-gray-500">
+              Border Color
+            </label>
             <div>
               <ColorPicker
                 label=":Choose Border color:"
                 selectedColor={borderColor}
                 onChange={setBorderColor}
+              />
+            </div>
+
+            {/* Background Color Picker */}
+            <label className="text-lg font-semibold mt-1 text-gray-500">
+              Background Color
+            </label>
+            <div>
+              <ColorPicker
+                label=":Choose background color:"
+                selectedColor={backgroundColor}
+                onChange={setBackgroundColor}
               />
             </div>
 

@@ -7,7 +7,7 @@ type ColorPickerProps = {
 };
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({
-  label,
+  // label,
   selectedColor,
   onChange,
 }) => {
@@ -17,7 +17,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 
   return (
     <div>
-      <label htmlFor="colorPicker">{label}</label>
+      {/* <label htmlFor="colorPicker">{label}</label> */}
       <input
         type="color"
         id="colorPicker"
