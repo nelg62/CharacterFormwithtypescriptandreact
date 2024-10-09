@@ -33,6 +33,7 @@ function DisplayPerson() {
     BorderColor: "",
     BackgroundColor: "",
   });
+  const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
 
   const handleDelete = (id: number) => {
     console.log("handleDelete id", id);
@@ -67,6 +68,13 @@ function DisplayPerson() {
     handleUpdatePerson(editPerson);
 
     setEditMode(null);
+  };
+
+  const toggleExpand = (id: number) => {
+    setExpanded((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
   };
 
   return (
@@ -169,8 +177,15 @@ function DisplayPerson() {
               </div>
               {/* Description */}
 
-              <h6 className="line-clamp-5">{character.Desc}</h6>
-
+              <h6 className={`${expanded[character.id] ? "" : "line-clamp-5"}`}>
+                {character.Desc}
+              </h6>
+              <button
+                onClick={() => toggleExpand(character.id)}
+                className="text-blue-500 underline"
+              >
+                {expanded[character.id] ? "Show Less" : "Show More"}
+              </button>
               {/*Delete and edit buttons  */}
               <div className="space-x-3 mb-2">
                 {/* Edit button */}
