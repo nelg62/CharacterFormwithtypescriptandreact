@@ -168,7 +168,9 @@ function DisplayPerson() {
                 />
               </div>
               {/* Description */}
-              <h6>{character.Desc}</h6>
+
+              <h6 className="line-clamp-5">{character.Desc}</h6>
+
               {/*Delete and edit buttons  */}
               <div className="space-x-3 mb-2">
                 {/* Edit button */}
