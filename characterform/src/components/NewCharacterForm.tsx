@@ -13,6 +13,7 @@ interface CharacterFormData {
   id: number;
   FirstName: string;
   LastName: string;
+  Desc: string;
   Image: string;
   Border: string;
   BorderColor: string;
@@ -32,6 +33,7 @@ function NewCharacterForm() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [FirstName, setFirstName] = useState("");
   const [LastName, setLastName] = useState("");
+  const [Desc, setDesc] = useState("");
 
   const [fileBase64, setFileBase64] = useState<string>("");
 
@@ -51,6 +53,7 @@ function NewCharacterForm() {
       id: 1,
       FirstName,
       LastName,
+      Desc,
       Image: fileBase64,
       Border: borderStyle,
       BorderColor: borderColor,
@@ -164,8 +167,27 @@ function NewCharacterForm() {
                 />
               )}
             </div>
+            <label
+              className="text-lg font-semibold mt-1 text-gray-500"
+              htmlFor="Desc"
+            >
+              Description
+            </label>
+            {/* Desctiption */}
+            <div className="flex flex-col">
+              <textarea
+                name="Desc"
+                id="Desc"
+                value={Desc}
+                onChange={(e) => setDesc(e.target.value)}
+                className="text-black resize-none text-center mx-3 rounded-lg border border-gray-300"
+              />
+            </div>
 
             {/* Border Style Picker */}
+            <label className="text-lg font-semibold mt-1 text-gray-500">
+              Border Style
+            </label>
             <div>
               <Dropdown<BorderStyle>
                 label="Choose a border style:"
@@ -176,7 +198,9 @@ function NewCharacterForm() {
             </div>
 
             {/* Border Color Picker */}
-
+            <label className="text-lg font-semibold mt-1 text-gray-500">
+              Border Color
+            </label>
             <div>
               <ColorPicker
                 label=":Choose Border color:"
@@ -186,7 +210,9 @@ function NewCharacterForm() {
             </div>
 
             {/* Background Color Picker */}
-
+            <label className="text-lg font-semibold mt-1 text-gray-500">
+              Background Color
+            </label>
             <div>
               <ColorPicker
                 label=":Choose background color:"

@@ -36,7 +36,7 @@ body {
   /* background: white; */
   width: 35rem;
   height: auto;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
